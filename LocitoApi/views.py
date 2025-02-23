@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from Serializers.Serializers import RegisterSerializer
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 
 
@@ -28,6 +30,9 @@ class RegisterView(APIView):
                    return Response({"message" : "invalid credentials"},status=401)
 
 class UpdateUsername(APIView):
+
+       permission_classes = [IsAuthenticated]
+       authentication_classes = [JWTTokenUserAuthentication]
        
        def put(self,request) -> Response :
               
@@ -66,7 +71,9 @@ class UpdateUsername(APIView):
 
 class UpdatePassword(APIView):
       
-
+      permission_classes = [IsAuthenticated]
+      authentication_classes = [JWTTokenUserAuthentication]
+      
       def put(self,request) -> Response :
 
                  data = request.data
