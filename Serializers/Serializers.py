@@ -25,15 +25,33 @@ class RegisterSerializer(ModelSerializer):
                return user
               
        
-       def update_password(self, instance, userpassword):
+       def update_password(self, instance, userpassword = None):
               
-              instance.change_password(userpassword)
-              instance.save()
-              return instance        
+              if(userpassword and len(userpassword) >= 8 ):
 
-       def update_username(self, instance, username):
+                instance.set_password(userpassword)
+                instance.save()
+                return instance 
               
-              instance.username = username
-              instance.save()               
-              return instance
+              else:
+
+                    return None       
+
+       def update_username(self, instance, username = None):
+              
+              if(username and username.isalnum()):
+                
+                try: 
+                
+                 instance.username = username
+                 instance.save()               
+                 return instance
+                
+                except Exception:
+              
+                   return None
+               
+              else:
+                    
+                  return None
 
