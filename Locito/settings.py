@@ -6,6 +6,7 @@ from corsheaders.defaults import default_headers
 
 from datetime import timedelta
 
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,12 +22,13 @@ SECRET_KEY = 'django-insecure-cov5v#n9m3di!y2&aor^*j@5am2&@s)bqy-69%44z-9pps@4xf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'Models',
     'Serializers',
     'corsheaders',
+    'LocitoApi',
+    'Models',
+    'channels',
 ]
 
 
@@ -52,8 +56,9 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    # 'Middlewares.middlewares.AuthorizationMiddleWare',
      "corsheaders.middleware.CorsMiddleware",
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,6 +84,8 @@ TEMPLATES = [
         },
     },
 ]
+
+ASGI_APPLICATION = 'Locito.asgi.application'
 
 WSGI_APPLICATION = 'Locito.wsgi.application'
 
@@ -179,12 +186,18 @@ SIMPLE_JWT = {
 }
 
 
-CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:3000']
+CORS_ALLOWED_ORIGINS = ["http://192.168.163.15:5173","http://127.0.0.1:8000","http://127.0.0.1:5173","http://localhost:5173","http://localhost:5173","http://192.168.12.15:5173"," http://192.168.195.15:5173","http://192.168.239.15:5173","http://192.168.98.15:5173"]
 
 CORS_ALLOW_CREDENTIALS = True
 
 # print("Default Headers : ",default_headers)
 
 CORS_ALLOW_HEADERS = [
-     *default_headers
+     *default_headers,
+     'authorization',
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+MEDIA_URL = '/media/'
+
