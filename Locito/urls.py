@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-@api_view
+@api_view(["GET"])
 def index(request) :
       
       return Response({"message" : "Locito Api Welcomes you"})
