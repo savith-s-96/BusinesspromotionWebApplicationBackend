@@ -91,6 +91,9 @@ class PostUpload(AsyncWebsocketConsumer) :
                                                   else :
                                                         
                                                          Post = Posts(user_id = self.user_id, post_type = self.post_file_type, post_url = self.post_url, thumbnail_url = self.thumbnail_url, uploaded_at = datetime.now())
+                                                         print("post : ",Post)
+                                                         print("post url : ", self.post_url)
+                                                         print("thumbnail_url : ",self.thumbnail_url)
                                                          await save_instance(Post)
                                              else :
                                                     
