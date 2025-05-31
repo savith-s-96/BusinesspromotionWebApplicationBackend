@@ -11,6 +11,10 @@ from asgiref.sync import sync_to_async
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Locito.settings')
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 
 Base_dir = Path(__file__).parent.parent
@@ -18,6 +22,12 @@ post_media_dir = path.join(Base_dir,"media","posts")
 thumnail_media_dir = path.join(Base_dir,"media","thumbnail_images")
 product_media_dir = path.join(Base_dir,"media","product_images")
 profile_media_dir = path.join(Base_dir,"media","profile_images")
+
+logger.info("Base Directory : ",Base_dir)
+logger.info("Post media directory : ",post_media_dir)
+logger.info("Thumbnail media directory : ",thumnail_media_dir)
+logger.info("Product media directory : ",product_media_dir)
+logger.info("Profile media directory : ",profile_media_dir)
 
 
 async def get_or_none(model,**feilds) :
@@ -81,19 +91,19 @@ class PostUpload(AsyncWebsocketConsumer) :
                                            
                                             #  print(self.user_id)
                                              user = await get_or_none(get_user_model(),id = self.user_id)
-                                             print("user : " , user)
+                                             logger.info("user : " , user)
                                              if(user) :
                                                     
                                                   if(self.post_description and self.post_description!="undefined") :
-                                                         print("post updated in database")
+                                                         
                                                          Post = Posts(user_id = self.user_id, post_type = self.post_file_type, post_url = self.post_url, thumbnail_url = self.thumbnail_url,post_description = self.post_description, uploaded_at = datetime.now()) 
                                                          await save_instance(Post)
                                                   else :
                                                         
                                                          Post = Posts(user_id = self.user_id, post_type = self.post_file_type, post_url = self.post_url, thumbnail_url = self.thumbnail_url, uploaded_at = datetime.now())
-                                                         print("post : ",Post)
-                                                         print("post url : ", self.post_url)
-                                                         print("thumbnail_url : ",self.thumbnail_url)
+                                                         logger.info("post : ",Post)
+                                                         logger.info("post url : ", self.post_url)
+                                                         logger.info("thumbnail_url : ",self.thumbnail_url)
                                                          await save_instance(Post)
                                              
                                                     
