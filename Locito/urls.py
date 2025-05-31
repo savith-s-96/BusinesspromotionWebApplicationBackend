@@ -10,7 +10,7 @@ def index(request) :
       return Response({"message" : "Locito Api Welcomes you"})
 
 urlpatterns = [
-    path("/",index),
+    path("",index),
     path('admin/', admin.site.urls),
     path("api/",include("LocitoApi.urls")),
 ]
