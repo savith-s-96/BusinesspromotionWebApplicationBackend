@@ -16,6 +16,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Locito.settings')
 Base_dir = Path(__file__).parent.parent
 post_media_dir = path.join(Base_dir,"media","posts")
 thumnail_media_dir = path.join(Base_dir,"media","thumbnail_images")
+product_media_dir = path.join(Base_dir,"media","product_images")
+profile_media_dir = path.join(Base_dir,"media","profile_images")
 
 
 async def get_or_none(model,**feilds) :
@@ -102,4 +104,72 @@ class PostUpload(AsyncWebsocketConsumer) :
         
 
                         
+class ProductUpload(AsyncWebsocketConsumer) :
 
+       async def connect(self):
+              
+              await self.accept()
+              await self.send(text_data="websocket connection open")
+              self.query_params = parse_qs(self.scope["query_string"].decode())
+              self.file_name = path.join(product_media_dir,self.query_params.get("file_name")[0])
+              self.file_object = await aiofiles.open(self.file_name,"ab")
+              self.file_size = int(self.query_params.get("file_size")[0])
+              self.product_url = os.path.join("media","product_images",self.query_params.get("file_name")[0])
+              self.bytes_received = 0
+
+       
+       async def receive(self, text_data=None, bytes_data=None):
+              
+              if(bytes_data) :
+
+                     await self.file_object.write(bytes_data)
+                     self.bytes_received = self.bytes_received + len(bytes_data)
+
+                     if(self.bytes_received >= self.file_size) :
+
+                            user = await get_or_none(get_user_model(),id = self.query_params.get("user_id")[0])
+                            if(user) :
+                               product = Products(user = user, product_image_url = self.product_url, product_name = self.query_params.get("product_name")[0], product_prize = self.query_params.get("product_prize")[0])
+                               await save_instance(product)
+                               await self.close()
+
+
+
+class ProfileImageUpload(AsyncWebsocketConsumer) :
+
+
+          async def connect(self):
+                 
+                 await self.accept()
+                 await self.send(text_data="websocket connection open")
+                 self.query_params = parse_qs(self.scope["query_string"].decode())
+                 self.file_name = path.join(profile_media_dir,self.query_params.get("file_name")[0])
+                 self.file_size = int(self.query_params.get("file_size")[0])
+                 self.bytes_received = 0
+                 self.profile_image_url = path.join("media","profile_images",self.query_params.get("file_name")[0])
+                 self.file_object = await aiofiles.open(self.file_name,"ab")
+
+          async def receive(self, text_data=None, bytes_data=None):
+                 
+                 if(bytes_data) :
+                        
+                        await self.file_object.write(bytes_data)
+                        self.bytes_received = self.bytes_received + len(bytes_data)
+
+                        if(self.bytes_received >= self.file_size) :
+                               
+                                user = await get_or_none(get_user_model(), id = self.query_params.get("user_id")[0])
+
+                                if(user) :
+                                       
+                                     profile = await get_or_none(Profile, user = user)
+
+                                     if(profile) :
+
+                                            profile.profile_image_url = self.profile_image_url
+
+                                            await save_instance(profile) 
+
+                                     await self.close()  
+                         
+       
