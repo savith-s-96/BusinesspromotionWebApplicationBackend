@@ -81,7 +81,7 @@ class PostUpload(AsyncWebsocketConsumer) :
                                            
                                             #  print(self.user_id)
                                              user = await get_or_none(get_user_model(),id = self.user_id)
-                                             print(user)
+                                             print("user : " , user)
                                              if(user) :
                                                     
                                                   if(self.post_description and self.post_description!="undefined") :
@@ -95,9 +95,9 @@ class PostUpload(AsyncWebsocketConsumer) :
                                                          print("post url : ", self.post_url)
                                                          print("thumbnail_url : ",self.thumbnail_url)
                                                          await save_instance(Post)
-                                             else :
+                                             
                                                     
-                                                    await self.close()
+                                             await self.close()
                                
 
                 
