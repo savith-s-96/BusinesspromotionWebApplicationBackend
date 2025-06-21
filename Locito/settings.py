@@ -22,7 +22,7 @@ SECRET_KEY = 'django-insecure-cov5v#n9m3di!y2&aor^*j@5am2&@s)bqy-69%44z-9pps@4xf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["685671a6e037d5e6e1ff9812--flourishing-profiterole-e1e696.netlify.app","businesspromotionwebapplicationbackend.onrender.com"]
 
 
 # Application definition
@@ -186,7 +186,7 @@ SIMPLE_JWT = {
 }
 
 
-CORS_ALLOWED_ORIGINS = ["http://192.168.163.15:5173","http://127.0.0.1:8000","http://127.0.0.1:5173","http://localhost:5173","http://localhost:5173","http://192.168.12.15:5173"," http://192.168.195.15:5173","http://192.168.239.15:5173","http://192.168.98.15:5173"]
+CORS_ALLOWED_ORIGINS = ["http://192.168.163.15:5173","http://127.0.0.1:8000","http://127.0.0.1:5173","http://localhost:5173","http://localhost:5173","http://192.168.12.15:5173"," http://192.168.195.15:5173","http://192.168.239.15:5173","http://192.168.98.15:5173","https://685671a6e037d5e6e1ff9812--flourishing-profiterole-e1e696.netlify.app","https://businesspromotionwebapplicationbackend.onrender.com"]
 
 CORS_ALLOW_CREDENTIALS = True
 
